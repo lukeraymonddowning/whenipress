@@ -2,7 +2,7 @@
   "name": "whenipress",
   "version": "1.0.0",
   "description": "A small, simple library that makes working with key presses in JS simple, intuitive and declarative.",
-  "main": "index.js",
+  "main": "whenipress.js",
   "scripts": {
     "test": "jest"
   },
