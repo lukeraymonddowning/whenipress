@@ -9,6 +9,7 @@ class PendingKeyboardEvent {
     _keyDownHandler
     _keyUpHandler
     _manager
+    _stopAfterNextRun = false
 
     constructor(manager, ...keys) {
         this._manager = manager
@@ -30,11 +31,23 @@ class PendingKeyboardEvent {
             handler({
                 keys: this.keysCurrentlyBeingPressed
             })
+
+            if (!this._stopAfterNextRun) {
+                return
+            }
+
+            this.stop()
         })
 
         this.createKeyUpListener(
             event => this.keysCurrentlyBeingPressed = filter(this.keysCurrentlyBeingPressed, key => key !== event.key)
         )
+
+        return this
+    }
+
+    once() {
+        this._stopAfterNextRun = true
 
         return this
     }

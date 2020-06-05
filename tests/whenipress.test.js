@@ -107,6 +107,32 @@ test('can retrieve all registered bindings', () => {
     expect(whenipress().bindings()).toEqual([['n', 'e', 's'], ['l', 'i', 'h']])
 })
 
+test('can listen for an event only once', () => {
+    eventFiredCount = 0
+
+    whenipress('z').then(e => eventFiredCount++).once()
+
+    press('z')
+    press('z')
+    press('z')
+    press('z')
+
+    expect(eventFiredCount).toBe(1)
+})
+
+test('can place the once modifier anywhere in the chain', () => {
+    eventFiredCount = 0
+
+    whenipress('z').once().then(e => eventFiredCount++)
+
+    press('z')
+    press('z')
+    press('z')
+    press('z')
+
+    expect(eventFiredCount).toBe(1)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))
