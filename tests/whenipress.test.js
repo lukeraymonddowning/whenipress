@@ -143,6 +143,40 @@ test('only fires if the exact keys are being pressed', () => {
     expect(eventFiredCount).toBe(0)
 })
 
+test('it can have a grouped key modifier', () => {
+    eventFiredCount = 0
+
+    whenipress().group(['a', 'z'], () => {
+        whenipress('b').then(e => eventFiredCount++)
+        whenipress('c').then(e => eventFiredCount++)
+    })
+
+    press('b')
+    press('c')
+    press('a', 'b')
+    press('a', 'c')
+    press('a', 'c', 'z')
+    press('a', 'b', 'z')
+
+    expect(eventFiredCount).toBe(2)
+})
+
+test('a single string group modifier may be passed', () => {
+    eventFiredCount = 0
+
+    whenipress().group('Shift', () => {
+        whenipress('b').then(e => eventFiredCount++)
+        whenipress('c').then(e => eventFiredCount++)
+    })
+
+    press('b')
+    press('c')
+    press('Shift', 'b')
+    press('Shift', 'c')
+
+    expect(eventFiredCount).toBe(2)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))
