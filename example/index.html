@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A demo of whenipress</title>
+</head>
+<body>
+
+<script src="./../dist/whenipress.js"></script>
+<script>
+    whenipress('a').then(e => console.log('You pressed the letter a'))
+
+    whenipress('Shift', 'A').then(e => console.log('Capital A'))
+
+    whenipress('Shift', 'Control', 'A').then(e => console.log('Shift a'))
+</script>
+</body>
+</html>

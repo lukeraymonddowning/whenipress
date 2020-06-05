@@ -133,6 +133,16 @@ test('can place the once modifier anywhere in the chain', () => {
     expect(eventFiredCount).toBe(1)
 })
 
+test('only fires if the exact keys are being pressed', () => {
+    eventFiredCount = 0
+
+    whenipress('z', 'a').then(e => eventFiredCount++)
+
+    press('z', 'c', 'a')
+
+    expect(eventFiredCount).toBe(0)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))

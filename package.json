@@ -4,12 +4,21 @@
   "description": "A small, simple library that makes working with key presses in JS simple, intuitive and declarative.",
   "main": "whenipress.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "author": "Luke Downing",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^26.0.1"
+    "cross-env": "^7.0.2",
+    "jest": "^26.0.1",
+    "laravel-mix": "^5.0.4",
+    "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
     "lodash": "^4.17.15"

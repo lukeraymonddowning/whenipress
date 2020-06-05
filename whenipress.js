@@ -2,7 +2,7 @@ var PendingKeyboardEventManager = require('./PendingKeyboardEventManager')
 
 const manager = new PendingKeyboardEventManager();
 
-function whenipress(...keys) {
+window.whenipress = (...keys) => {
     if (keys.length === 0) {
         return manager
     }

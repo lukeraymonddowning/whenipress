@@ -1,5 +1,4 @@
 var isEqual = require('lodash/_baseIsEqual')
-var sortBy = require('lodash/_baseSortBy')
 var filter = require('lodash/filter')
 
 class PendingKeyboardEvent {
@@ -18,10 +17,6 @@ class PendingKeyboardEvent {
 
     then(handler) {
         this.createKeyDownListener(event => {
-            if (!this.keysToWatch.includes(event.key)) {
-                return
-            }
-
             this.keysCurrentlyBeingPressed.push(event.key)
 
             if (!this.checkArraysHaveSameValuesRegardlessOfOrder(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
@@ -85,7 +80,11 @@ class PendingKeyboardEvent {
     }
 
     checkArraysHaveSameValuesRegardlessOfOrder(array1, array2) {
-        return isEqual(sortBy([...array1]), sortBy([...array2]))
+        if (!isEqual([...array1].sort(), [...array2].sort())) {
+            return false
+        }
+
+        return array1.length === array2.length;
     }
 
 }
