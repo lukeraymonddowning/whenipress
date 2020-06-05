@@ -1,0 +1,17 @@
+{
+  "name": "whenipress",
+  "version": "1.0.0",
+  "description": "A small, simple library that makes working with key presses in JS simple, intuitive and declarative.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Luke Downing",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
