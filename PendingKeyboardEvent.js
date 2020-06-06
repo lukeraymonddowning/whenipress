@@ -32,12 +32,17 @@ class PendingKeyboardEvent {
                 return
             }
 
-            this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch)
+            if (this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch).includes(false)) {
+                return this._resetPressCount()
+            }
+
             handler({
                 keys: this.keysCurrentlyBeingPressed
             })
 
             this._resetPressCount()
+
+            this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
 
             if (!this._stopAfterNextRun) {
                 return

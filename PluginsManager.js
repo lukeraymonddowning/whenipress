@@ -12,17 +12,23 @@ class PluginsManager {
     }
 
     handle(event, ...parameters) {
-        this._loopOverPlugins(plugin => {
-            if (!plugin[event]) {
-                return
-            }
-
-            plugin[event](...parameters, this._manager)
-        })
+        return this._loopOverPlugins(plugin => this.handlePlugin(plugin, event, ...parameters))
     }
 
-    _loopOverPlugins(action) {
-        this.plugins.forEach(plugin => action(plugin))
+    handleSpecific(plugins, event, ...parameters) {
+        return this._loopOverPlugins(plugin => this.handlePlugin(plugin, event, ...parameters), plugins)
+    }
+
+    handlePlugin(plugin, event, ...parameters) {
+        if (!plugin[event]) {
+            return
+        }
+
+        return plugin[event](...parameters, this._manager)
+    }
+
+    _loopOverPlugins(action, plugins = this.plugins) {
+        return plugins.map(plugin => action(plugin))
     }
 
 }

@@ -70,7 +70,64 @@ test('it may hook in directly before an event handler', () => {
     expect(beforeHandled).toBeTruthy()
 })
 
-test('a plugin may emit options', () => {
+test('the pre event handler hook may interrupt the handler', () => {
+    var eventFiredCount = 0
+    var beforeHandled = false
+
+    const plugin = {
+        beforeBindingHandled: (keys, globalInstance) => {
+            expect(eventFiredCount).toBe(0)
+            beforeHandled = true
+
+            return false
+        }
+    }
+
+    whenipress().use(plugin)
+    whenipress('a').then(e => eventFiredCount++)
+
+    press('a')
+    expect(eventFiredCount).toBe(0)
+    expect(beforeHandled).toBeTruthy()
+})
+
+test('it may hook into the post event handler', () => {
+    var eventFiredCount = 0
+    var postHandled = false
+
+    const plugin = {
+        afterBindingHandled: (keys, globalInstance) => {
+            expect(keys).toEqual(['a'])
+            expect(eventFiredCount).toBe(1)
+            postHandled = true
+        }
+    }
+
+    whenipress().use(plugin)
+    whenipress('a').then(e => eventFiredCount++)
+
+    press('a')
+    expect(eventFiredCount).toBe(1)
+    expect(postHandled).toBeTruthy()
+})
+
+test('it can hook into the constructor', () => {
+    var eventFiredCount = 0
+
+    const plugin = {
+        mounted: globalInstance => {
+            globalInstance.register('a').then(e => eventFiredCount++)
+        }
+    }
+
+    whenipress().use(plugin)
+
+    press('a')
+
+    expect(eventFiredCount).toBe(1)
+})
+
+test('a plugin may omit options', () => {
     const examplePlugin = {}
 
     whenipress().use(examplePlugin)
