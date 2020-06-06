@@ -42,6 +42,7 @@ class PendingKeyboardEventManager {
 
     _childStopped(child) {
         this.registeredEvents = filter(this.registeredEvents, event => event !== child)
+        this.pluginsManager.handle('bindingStopped', child.keysToWatch)
     }
 
 }

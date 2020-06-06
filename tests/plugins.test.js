@@ -35,6 +35,22 @@ test('it can be notified of when all bindings are stopped', done => {
     whenipress().stopAll()
 })
 
+test('it may be notified of when a single binding is stopped', done => {
+    const plugin = {
+        bindingStopped: (keys, globalInstance) => {
+            expect(keys).toEqual(['a'])
+            expect(globalInstance.bindings().length).toBe(0)
+            done()
+        }
+    }
+
+    whenipress().use(plugin)
+
+    let binding = whenipress('a').then(e => {})
+    expect(whenipress().bindings().length).toBe(1)
+    binding.stop()
+})
+
 test('a plugin may emit options', () => {
     const examplePlugin = {}
 
