@@ -179,7 +179,6 @@ test('plugins may allow users to specify custom options', () => {
     press('a')
 
     whenipress().flushPlugins()
-
     whenipress().use(whenipress().pluginWithOptions(plugin, { binding: 'b' }))
     press('b')
 
