@@ -1,7 +1,9 @@
 let mix = require('laravel-mix');
 
 mix.babelConfig({
-    presets: ['@babel/preset-env'],
+    presets: [
+        '@babel/preset-env'
+    ],
     plugins: ['@babel/plugin-proposal-class-properties']
 })
 
