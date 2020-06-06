@@ -67,6 +67,11 @@ class PendingKeyboardEvent {
             }
 
             this._totalKeyUpCountForKeysToWatch++
+
+            if (!this._releasedHandler) {
+                return
+            }
+
             this._releasedHandler(event)
         })
 
