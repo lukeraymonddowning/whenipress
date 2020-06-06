@@ -1,10 +1,10 @@
 class PluginsManager {
 
-    manager = null
+    _manager = null
     plugins = []
 
     constructor(manager) {
-        this.manager = manager
+        this._manager = manager
     }
 
     add(...plugins) {
@@ -17,7 +17,7 @@ class PluginsManager {
                 return
             }
 
-            plugin[event](...parameters, this.manager)
+            plugin[event](...parameters, this._manager)
         })
     }
 
