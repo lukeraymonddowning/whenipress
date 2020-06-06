@@ -61,7 +61,8 @@ test('can cleanup event listeners', done => {
         eventFiredCount++
     })
 
-    var otherWip = whenipress('o').then(e => {})
+    var otherWip = whenipress('o').then(e => {
+    })
 
     expect(whenipress().bindings().length).toBe(2)
 
@@ -101,8 +102,10 @@ test('can stop all event listeners', () => {
 })
 
 test('can retrieve all registered bindings', () => {
-    whenipress('n', 'e', 's').then(e => {})
-    whenipress('l', 'i', 'h').then(e => {})
+    whenipress('n', 'e', 's').then(e => {
+    })
+    whenipress('l', 'i', 'h').then(e => {
+    })
 
     expect(whenipress().bindings()).toEqual([['n', 'e', 's'], ['l', 'i', 'h']])
 })
@@ -207,6 +210,48 @@ test('the double tap timeout can be altered', done => {
         expect(eventFiredCount).toBe(1)
         done()
     }, 350)
+})
+
+test('it can listen for keys release', () => {
+
+    var keysPressed = false
+
+    whenipress('a', 'b', 'c')
+        .then(e => {
+            keysPressed = true
+        })
+        .whenReleased(e => {
+            keysPressed = false
+        })
+
+    expect(keysPressed).toBeFalsy()
+    dispatchKeyDown('a')
+    dispatchKeyDown('b')
+    dispatchKeyDown('c')
+    expect(keysPressed).toBeTruthy()
+    dispatchKeyUp('a')
+    expect(keysPressed).toBeTruthy()
+    dispatchKeyUp('b')
+    dispatchKeyUp('c')
+    expect(keysPressed).toBeFalsy()
+
+})
+
+test('it will only fire the when released if the active shortcut was released', () => {
+    var releasedEventFired = false
+
+    whenipress('a')
+        .then(e => {})
+        .whenReleased(e => releasedEventFired = true)
+
+    press('b')
+    press('c', 'b', 'a')
+    press('z')
+    press('x')
+    expect(releasedEventFired).toBeFalsy()
+
+    press('a')
+    expect(releasedEventFired).toBeTruthy()
 })
 
 function press(...keys) {

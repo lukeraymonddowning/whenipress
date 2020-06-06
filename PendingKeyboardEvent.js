@@ -13,6 +13,9 @@ class PendingKeyboardEvent {
     _onlyFireOnDoublePress = false
     _doublePressTimeout = 500
     _pressCount = 0
+    _totalKeyDownCountForKeysToWatch = 0
+    _totalKeyUpCountForKeysToWatch = 0
+    _releasedHandler = null
 
     constructor(manager, ...keys) {
         this._manager = manager
@@ -41,6 +44,7 @@ class PendingKeyboardEvent {
             })
 
             this._resetPressCount()
+            this._totalKeyDownCountForKeysToWatch++
 
             this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
 
@@ -51,11 +55,26 @@ class PendingKeyboardEvent {
             this.stop()
         })
 
-        this.createKeyUpListener(
-            event => this.keysCurrentlyBeingPressed = filter(this.keysCurrentlyBeingPressed, key => key !== event.key)
-        )
+        this.createKeyUpListener(event => {
+            this.keysCurrentlyBeingPressed = filter(this.keysCurrentlyBeingPressed, key => key !== event.key)
+
+            if (this.keysCurrentlyBeingPressed.length !== 0) {
+                return
+            }
+
+            if (this._totalKeyDownCountForKeysToWatch <= this._totalKeyUpCountForKeysToWatch) {
+                return
+            }
+
+            this._totalKeyUpCountForKeysToWatch++
+            this._releasedHandler(event)
+        })
 
         return this
+    }
+
+    whenReleased(handler) {
+        this._releasedHandler = handler
     }
 
     _resetPressCount() {
