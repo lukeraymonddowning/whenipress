@@ -177,6 +177,38 @@ test('a single string group modifier may be passed', () => {
     expect(eventFiredCount).toBe(2)
 })
 
+test('it can listen for double taps', done => {
+    eventFiredCount = 0
+
+    whenipress('a').twiceRapidly().then(e => eventFiredCount++)
+
+    press('a')
+    press('a')
+
+    press('a')
+    setTimeout(e => {
+        press('a')
+        expect(eventFiredCount).toBe(1)
+        done()
+    }, 600)
+})
+
+test('the double tap timeout can be altered', done => {
+    eventFiredCount = 0
+
+    whenipress('a').twiceRapidly(300).then(e => eventFiredCount++)
+
+    press('a')
+    press('a')
+
+    press('a')
+    setTimeout(e => {
+        press('a')
+        expect(eventFiredCount).toBe(1)
+        done()
+    }, 350)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))

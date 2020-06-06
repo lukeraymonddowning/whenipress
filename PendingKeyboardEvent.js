@@ -9,6 +9,9 @@ class PendingKeyboardEvent {
     _keyUpHandler
     _manager
     _stopAfterNextRun = false
+    _onlyFireOnDoublePress = false
+    _doublePressTimeout = 500
+    _pressCount = 0
 
     constructor(manager, ...keys) {
         this._manager = manager
@@ -23,9 +26,15 @@ class PendingKeyboardEvent {
                 return
             }
 
+            if (!this._shouldHandleOrSkipDoublePress()) {
+                return
+            }
+
             handler({
                 keys: this.keysCurrentlyBeingPressed
             })
+
+            this._resetPressCount()
 
             if (!this._stopAfterNextRun) {
                 return
@@ -41,8 +50,35 @@ class PendingKeyboardEvent {
         return this
     }
 
+    _resetPressCount() {
+        this._pressCount = 0
+    }
+
+    _shouldHandleOrSkipDoublePress() {
+        if (!this._onlyFireOnDoublePress) {
+            return true
+        }
+
+        this._pressCount++
+
+        if (this._pressCount === 2) {
+            return true
+        }
+
+        setTimeout(e => this._resetPressCount(), this._doublePressTimeout)
+
+        return false
+    }
+
     once() {
         this._stopAfterNextRun = true
+
+        return this
+    }
+
+    twiceRapidly(timeout = 500) {
+        this._onlyFireOnDoublePress = true
+        this._doublePressTimeout = timeout
 
         return this
     }
