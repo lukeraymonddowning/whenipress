@@ -75,6 +75,8 @@ class PendingKeyboardEvent {
 
     whenReleased(handler) {
         this._releasedHandler = handler
+
+        return this
     }
 
     _resetPressCount() {
