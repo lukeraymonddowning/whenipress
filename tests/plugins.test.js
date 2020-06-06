@@ -51,6 +51,25 @@ test('it may be notified of when a single binding is stopped', done => {
     binding.stop()
 })
 
+test('it may hook in directly before an event handler', () => {
+    var eventFiredCount = 0
+    var beforeHandled = false
+
+    const plugin = {
+        beforeBindingHandled: (keys, globalInstance) => {
+            expect(eventFiredCount).toBe(0)
+            beforeHandled = true
+        }
+    }
+
+    whenipress().use(plugin)
+    whenipress('a').then(e => eventFiredCount++)
+
+    press('a')
+    expect(eventFiredCount).toBe(1)
+    expect(beforeHandled).toBeTruthy()
+})
+
 test('a plugin may emit options', () => {
     const examplePlugin = {}
 
