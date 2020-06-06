@@ -6,7 +6,6 @@ afterEach(() => {
 })
 
 test('it can be notified of when a new binding is registered', done => {
-
     const examplePlugin = {
         bindingRegistered: (binding, globalInstance) => {
             expect(binding).toEqual(['a'])
@@ -161,6 +160,30 @@ test('plugins may be cleared', () => {
     whenipress().flushPlugins()
 
     expect(whenipress().pluginsManager.plugins.length).toBe(0)
+})
+
+test('plugins may allow users to specify custom options', () => {
+    var eventFiredCount = 0
+
+    const plugin = {
+        mounted: (globalInstance, self) => {
+            globalInstance.register(self.options.binding).then(e => self.options.handler(e))
+        },
+        options: {
+            binding: 'a',
+            handler: e => eventFiredCount++
+        }
+    }
+
+    whenipress().use(plugin)
+    press('a')
+
+    whenipress().flushPlugins()
+
+    whenipress().use(whenipress().pluginWithOptions(plugin, { binding: 'b' }))
+    press('b')
+
+    expect(eventFiredCount).toBe(2)
 })
 
 function press(...keys) {

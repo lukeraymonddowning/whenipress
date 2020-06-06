@@ -27,6 +27,10 @@ class PendingKeyboardEventManager {
         this.pluginsManager.handleSpecific(plugins, 'mounted')
     }
 
+    pluginWithOptions(plugin, options) {
+        return {...plugin, options: {...plugin.options, ...options}}
+    }
+
     flushPlugins() {
         this.pluginsManager = new PluginsManager(this)
     }

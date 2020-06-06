@@ -24,7 +24,7 @@ class PluginsManager {
             return
         }
 
-        return plugin[event](...parameters, this._manager)
+        return plugin[event](...parameters, this._manager, plugin)
     }
 
     _loopOverPlugins(action, plugins = this.plugins) {
