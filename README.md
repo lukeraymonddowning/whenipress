@@ -1,6 +1,13 @@
 # whenipress
 A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your application.
 
+## Table of Contents
+* [Features](#features)
+* [Why use?](#why-use-whenipress)
+* [Usage](#using-whenipress)
+    - [Simple key presses](#listening-for-key-presses)
+    - [Key combos](#listening-for-key-combinations)
+
 ## Features
 - A simple, intuitive syntax for adding keyboard shortcuts for key presses and key combinations.
 - Takes the complexity out of key codes and values, allowing you to mix and match to your heart's content.
