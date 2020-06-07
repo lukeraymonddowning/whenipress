@@ -17,7 +17,7 @@ test('registers an event listener for the given alphanumeric', done => {
     })
 })
 
-test('it can be passed key codes instead of actuals', () => {
+test('it can be passed key codes instead of values', () => {
     var eventFiredCount = 0
 
     let wip = whenipress('Shift', 'Digit2').then(e => eventFiredCount++)
