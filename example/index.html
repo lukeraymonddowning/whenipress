@@ -15,6 +15,8 @@
     whenipress('Shift', 'Control', 'A').then(e => console.log('Shift a'))
 
     whenipress('/').twiceRapidly().then(e => console.log('You double tapped the / key!'))
+
+    whenipress('Shift', 'Digit2').then(e => console.log('Shift 2 pressed')).whenReleased(e => console.log('Shift 2 released'))
 </script>
 </body>
 </html>

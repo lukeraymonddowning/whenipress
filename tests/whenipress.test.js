@@ -17,6 +17,26 @@ test('registers an event listener for the given alphanumeric', done => {
     })
 })
 
+test('it can be passed key codes instead of actuals', () => {
+    var eventFiredCount = 0
+
+    let wip = whenipress('Shift', 'Digit2').then(e => eventFiredCount++)
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Shift'}))
+    document.dispatchEvent(new KeyboardEvent('keydown', {'key': '@', 'code': 'Digit2'}))
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'Shift'}))
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': '@', 'code': 'Digit2'}))
+
+    expect(wip.keysCurrentlyBeingPressed).toEqual([])
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Shift'}))
+    document.dispatchEvent(new KeyboardEvent('keydown', {'key': '@', 'code': 'Digit2'}))
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'Shift'}))
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': '@', 'code': 'Digit2'}))
+
+    expect(eventFiredCount).toBe(2)
+})
+
 test('can be given multiple parameters for key combinations', done => {
     whenipress('a', 'b', 'c').then(e => {
         expect(e.keys).toEqual(['b', 'a', 'c'])

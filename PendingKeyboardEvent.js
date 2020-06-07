@@ -1,5 +1,4 @@
 var isEqual = require('lodash/_baseIsEqual')
-var filter = require('lodash/filter')
 
 class PendingKeyboardEvent {
 
@@ -25,7 +24,7 @@ class PendingKeyboardEvent {
 
     then(handler) {
         this.createKeyDownListener(event => {
-            this.keysCurrentlyBeingPressed.push(event.key)
+            this._storeKeyBeingPressed(event)
 
             if (!this.checkArraysHaveSameValuesRegardlessOfOrder(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
                 return
@@ -56,7 +55,7 @@ class PendingKeyboardEvent {
         })
 
         this.createKeyUpListener(event => {
-            this.keysCurrentlyBeingPressed = filter(this.keysCurrentlyBeingPressed, key => key !== event.key)
+            this._removeReleasedKeyFromKeysBeingPressedArray(event)
 
             if (this.keysCurrentlyBeingPressed.length !== 0) {
                 return
@@ -66,7 +65,7 @@ class PendingKeyboardEvent {
                 return
             }
 
-            this._totalKeyUpCountForKeysToWatch++
+            this._totalKeyUpCountForKeysToWatch = this._totalKeyDownCountForKeysToWatch
 
             if (!this._releasedHandler) {
                 return
@@ -82,6 +81,14 @@ class PendingKeyboardEvent {
         this._releasedHandler = handler
 
         return this
+    }
+
+    _storeKeyBeingPressed(event) {
+        if (this.keysToWatch.includes(event.code)) {
+            return this.keysCurrentlyBeingPressed.push(event.code)
+        }
+
+        return this.keysCurrentlyBeingPressed.push(event.key)
     }
 
     _resetPressCount() {
@@ -102,6 +109,12 @@ class PendingKeyboardEvent {
         setTimeout(e => this._resetPressCount(), this._doublePressTimeout)
 
         return false
+    }
+
+    _removeReleasedKeyFromKeysBeingPressedArray(event) {
+        this.keysCurrentlyBeingPressed = [...this.keysCurrentlyBeingPressed].filter(key => {
+            return key !== event.key && key !== event.code
+        })
     }
 
     once() {
