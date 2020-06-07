@@ -20,6 +20,9 @@ much simpler, easier to manage way. Getting started is as simple as calling the 
 in the key-combo you want to listen for. Check out our guide below...
 
 ## Using whenipress
+What follows is an in depth look at all the juicy functionality offered to you out of the box by whenipress. Enjoy!
+
+### Listening for key presses
 So, how do you get started? After you've installed the package using one of the methods described in the 'getting started'
 section, you can get to registering your first keyboard shortcut. Let's imagine we want to register a shortcut on the '/'
 key that will focus the global search bar in our web application. We've already set up a method, `focusGlobalSearchBar()`,
@@ -29,6 +32,7 @@ that will actually focus the input for us. We just need to wire it up to our sho
 whenipress('/').then(event => focusGlobalSearchBar())
 ```
 
+### Listening for key combinations
 And we're done. Yeah, it's that easy. However, that's also pretty easy to set up in vanilla JavaScript, right? What isn't
 so easy to wire up are key combinations. There is no way in native JavaScript to listen for multiple keys at the same time.
 Fret not, we have you covered here too. Let's imagine that, when the 'left control' key is pressed in combination with
