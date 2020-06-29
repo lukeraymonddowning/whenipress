@@ -159,3 +159,6 @@ whenipress('a', 'b', 'c')
             console.log('Keys are released!');
         });
 ```
+
+## Extending whenipress
+Whenipress was created to be extended. Whilst it offers tons of functionality out of the box, it can 

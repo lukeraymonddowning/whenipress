@@ -5,9 +5,22 @@ var filter = require('lodash/filter')
 class PendingKeyboardEventManager {
 
     constructor() {
+        this.focusedElement = null
         this.registeredEvents = []
         this.modifiers = []
         this.pluginsManager = new PluginsManager(this)
+
+        this.registerFocusListeners()
+    }
+
+    registerFocusListeners() {
+        document.addEventListener('focusin', () => {
+            this.focusedElement = document.activeElement
+        });
+
+        document.addEventListener('focusout', () => {
+            this.focusedElement = null
+        });
     }
 
     register(...keys) {
