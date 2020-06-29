@@ -1,5 +1,3 @@
-var isEqual = require('lodash/_baseIsEqual')
-
 class PendingKeyboardEvent {
 
     constructor(manager, ...keys) {
@@ -164,11 +162,27 @@ class PendingKeyboardEvent {
     }
 
     checkArraysHaveSameValuesRegardlessOfOrder(array1, array2) {
-        if (!isEqual([...array1].sort(), [...array2].sort())) {
+        if (!this._arraysAreEqual(array1, array2)) {
             return false
         }
 
         return array1.length === array2.length;
+    }
+
+    _arraysAreEqual(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false
+        }
+
+        if (!array2.every(item => array1.includes(item))) {
+            return false
+        }
+
+        if (!array1.every(item => array2.includes(item))) {
+            return false
+        }
+
+        return true;
     }
 
 }

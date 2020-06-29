@@ -1,6 +1,5 @@
 var PendingKeyboardEvent = require('./PendingKeyboardEvent')
 var PluginsManager = require('./PluginsManager')
-var filter = require('lodash/filter')
 
 class PendingKeyboardEventManager {
 
@@ -61,7 +60,7 @@ class PendingKeyboardEventManager {
     }
 
     _childStopped(child) {
-        this.registeredEvents = filter(this.registeredEvents, event => event !== child)
+        this.registeredEvents = [...this.registeredEvents].filter(event => event !== child)
         this.pluginsManager.handle('bindingStopped', child.keysToWatch)
     }
 
