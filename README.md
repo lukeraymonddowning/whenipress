@@ -20,11 +20,12 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 ## Features
 - A simple, intuitive syntax for adding keyboard shortcuts for key presses and key combinations.
 - Takes the complexity out of key codes and values, allowing you to mix and match to your heart's content.
+- Teeny and tiny - just 1.4kB minified & gzipped.
 - Provides advanced functionality, such as listening for double tapping keys and only listening for a keyboard event once.
 - Stores all your key bindings in one place, allowing you to have access to every binding in your application.
 - Allows for key groups using the `group` function, making your code more readable and powerful.
 - Provides a hook to be notified when a keyboard shortcut has been released.
-- Includes a powerful plugin syntax for extending the base functionality of whenipress
+- Includes a powerful plugin syntax for extending the base functionality of whenipress.
 
 ## Installation
 Whenipress is available via npm: `npm i whenipress`. 
