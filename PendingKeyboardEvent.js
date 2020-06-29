@@ -31,6 +31,10 @@ class PendingKeyboardEvent {
                 return
             }
 
+            if (this._manager.focusedElement) {
+                return
+            }
+
             if (this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch).includes(false)) {
                 return this._resetPressCount()
             }
