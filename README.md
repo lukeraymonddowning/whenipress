@@ -27,6 +27,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 - Includes a powerful plugin syntax for extending the base functionality of whenipress
 
 ## Installation
+Whenipress is available via npm: `npm i whenipress`
 
 ## Why use whenipress?
 Keyboard shortcuts are often an add-on in most web applications. Why? Usually, because it can be pretty complicated to
