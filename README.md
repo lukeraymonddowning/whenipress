@@ -27,7 +27,16 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 - Includes a powerful plugin syntax for extending the base functionality of whenipress
 
 ## Installation
-Whenipress is available via npm: `npm i whenipress`
+Whenipress is available via npm: `npm i whenipress`.
+
+But you can equally use it via a CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/whenipress@1.1.0/dist/whenipress.js"></script>
+<script>
+whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
+</script>
+```
 
 ## Why use whenipress?
 Keyboard shortcuts are often an add-on in most web applications. Why? Usually, because it can be pretty complicated to
