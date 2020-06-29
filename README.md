@@ -7,6 +7,14 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 * [Usage](#using-whenipress)
     - [Simple key presses](#listening-for-key-presses)
     - [Key combos](#listening-for-key-combinations)
+    - [Stop listening for a single binding](#stop-listening-for-a-single-key-binding)
+    - [Stop listening for all bindings](#stop-listening-for-all-key-bindings)
+    - [Retrieve registered bindings](#retrieve-a-list-of-every-registered-key-binding)
+    - [Listen for an event just once](#listening-for-an-event-just-once)
+    - [Create keybinding groups](#creating-keybinding-groups)
+    - [Listen for double taps](#listening-for-double-taps)
+    - [Listen for keys being released](#listening-for-when-keys-are-released)
+    
 
 ## Features
 - A simple, intuitive syntax for adding keyboard shortcuts for key presses and key combinations.
@@ -52,3 +60,82 @@ whenipress('ControlLeft', 'n').then(event => redirectToCreateForm())
 
 Pretty nice, right? We can pass any number of keys or key codes into the `whenipress` method to set up complex and
 powerful shortcuts. 
+
+### Stop listening for a single key binding
+Sometimes, you'll want to disable a key binding. No problem! When you create the key binding, you'll be returned a 
+reference to it. You can call the `stop` method on that reference at any time to stop listening.
+
+```javascript
+var nKeyPress = whenipress('n').then(e => console.log('You pressed n'));
+
+nKeyPress.stop();
+```
+
+Even better, the related event listener will be completely removed from the DOM, keeping performance snappy.
+
+### Stop listening for all key bindings
+If you wish to stop listening for all registered key bindings, you can call the `stopAll` method on the global
+`whenipress` instance.
+
+```javascript
+whenipress('A', 'B', 'C').then(e => console.log('Foo'));
+whenipress('T', 'A', 'N').then(e => console.log('Bar'));
+
+whenipress().stopAll();
+```   
+
+### Retrieve a list of every registered key binding
+Because all key bindings are stored in a single location, it is possible to retrieve them programmatically at any time.
+This is super useful in whenipress plugins, where you can't be sure which key bindings have been registered.
+
+```javascript
+    whenipress('n', 'e', 's').then(e => console.log('Foo'));
+    whenipress('l', 'i', 'h').then(e => console.log('Bar'));
+
+    whenipress().bindings() // Will return [['n', 'e', 's'], ['l', 'i', 'h']]
+```  
+
+### Listening for an event just once
+Only want to register a key binding for a single press? Just add the `once` modifier!
+
+```javascript
+whenipress('z').then(e => console.log("z was pressed")).once();
+```
+
+The event listener will be removed the first time it is fired. You can place the `once` modifier before the `then`
+call if you wish.
+
+### Creating keybinding groups
+Whenipress supports key groups for easily adding modifiers without having to repeat yourself over and over.
+
+```javascript
+whenipress().group('Shift', () => {
+        whenipress('b').then(e => console.log('Shift + b pressed'));
+        whenipress('c').then(e => console.log('Shift + c pressed'));
+    });
+```
+
+### Listening for double taps
+Want to listen for keys pressed twice in quick succession? We have you covered. You can even alter the timeout between
+key presses.
+
+```javascript
+whenipress('a').twiceRapidly().then(e => console.log('You just double pressed the a key'));
+
+// Use a 300ms timeout
+whenipress('a').twiceRapidly(300).then(e => console.log('You just double pressed the a key'));
+```
+
+### Listening for when keys are released
+The `then` callback you provide whenipress will be fired as soon as all keys in the binding are pressed down at the same
+time. Sometimes, however, you'll want to listen for when the keys are released too. No sweat here!
+
+```javascript
+whenipress('a', 'b', 'c')
+        .then(e => {
+            console.log('Keys are depressed!');
+        })
+        .whenReleased(e => {
+            console.log('Keys are released!');
+        });
+```
