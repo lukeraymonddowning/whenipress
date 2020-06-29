@@ -3,6 +3,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 
 ## Table of Contents
 * [Features](#features)
+* [Installation](#installation)
 * [Why use?](#why-use-whenipress)
 * [Usage](#using-whenipress)
     - [Simple key presses](#listening-for-key-presses)
@@ -24,6 +25,8 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 - Allows for key groups using the `group` function, making your code more readable and powerful.
 - Provides a hook to be notified when a keyboard shortcut has been released.
 - Includes a powerful plugin syntax for extending the base functionality of whenipress
+
+## Installation
 
 ## Why use whenipress?
 Keyboard shortcuts are often an add-on in most web applications. Why? Usually, because it can be pretty complicated to

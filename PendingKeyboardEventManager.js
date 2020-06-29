@@ -4,9 +4,11 @@ var filter = require('lodash/filter')
 
 class PendingKeyboardEventManager {
 
-    registeredEvents = []
-    modifiers = []
-    pluginsManager = new PluginsManager(this)
+    constructor() {
+        this.registeredEvents = []
+        this.modifiers = []
+        this.pluginsManager = new PluginsManager(this)
+    }
 
     register(...keys) {
         let keysWithModifiers = [...this.modifiers, ...keys]

@@ -2,21 +2,18 @@ var isEqual = require('lodash/_baseIsEqual')
 
 class PendingKeyboardEvent {
 
-    keysToWatch = []
-    keysCurrentlyBeingPressed = []
-    _keyDownHandler
-    _keyUpHandler
-    _manager
-    _pluginsManager
-    _stopAfterNextRun = false
-    _onlyFireOnDoublePress = false
-    _doublePressTimeout = 500
-    _pressCount = 0
-    _totalKeyDownCountForKeysToWatch = 0
-    _totalKeyUpCountForKeysToWatch = 0
-    _releasedHandler = null
-
     constructor(manager, ...keys) {
+        this.keysCurrentlyBeingPressed = []
+        this._keyDownHandler = null
+        this._keyUpHandler = null
+        this._stopAfterNextRun = false
+        this._onlyFireOnDoublePress = false
+        this._doublePressTimeout = 500
+        this._pressCount = 0
+        this._totalKeyDownCountForKeysToWatch = 0
+        this._totalKeyUpCountForKeysToWatch = 0
+        this._releasedHandler = null
+
         this._manager = manager
         this._pluginsManager = this._manager.pluginsManager
         this.keysToWatch = keys

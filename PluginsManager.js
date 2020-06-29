@@ -1,10 +1,8 @@
 class PluginsManager {
 
-    _manager = null
-    plugins = []
-
     constructor(manager) {
         this._manager = manager
+        this.plugins = []
     }
 
     add(...plugins) {
