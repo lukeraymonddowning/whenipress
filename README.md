@@ -154,7 +154,7 @@ time. Sometimes, however, you'll want to listen for when the keys are released t
 ```javascript
 whenipress('a', 'b', 'c')
         .then(e => {
-            console.log('Keys are depressed!');
+            console.log('Keys are pressed!');
         })
         .whenReleased(e => {
             console.log('Keys are released!');
@@ -162,4 +162,157 @@ whenipress('a', 'b', 'c')
 ```
 
 ## Extending whenipress
-Whenipress was created to be extended. Whilst it offers tons of functionality out of the box, it can 
+Whenipress was created to be extended. Whilst it offers tons of functionality out of the box, it can do so much more with a plugin.
+What follows is a brief guide on how to get started creating your own plugins for whenipress.
+
+> Created a great plugin that you think would benefit the community? Create an issue for it and we'll link you here!
+
+### Registering plugins
+To register a plugin in your application, whenipress provides a `use` method.
+
+```javascript
+import whenipress from 'whenipress/whenipress'
+import plugin from 'awesomeplugin/plugin'
+import anotherPlugin from 'thegreatplugin/plugin'
+
+whenipress().use(plugin, anotherPlugin)
+```
+
+### Plugin syntax
+Whenipress plugins are essentially JSON objects. The properties on that JSON object will be called by whenipress during 
+different stages of the process, allowing you to hook in and perform any functionality you can think of. You do not
+need to include every hook, only the ones you're interested in using for your plugin.
+
+What follows is a list of available hooks.
+
+#### Initialising your plugin
+If you need to perform a setup step in your plugin, you should use the `mounted` hook. It is called when your plugin
+is first registered by the user. This receives the global `whenipress` instance as a parameter.
+You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    mounted: globalInstance => {
+        alert('Hello world!')
+        globalInstance.register('a', 'b', 'c').then(e => alert('You pressed a, b and  c'))                            
+    }
+}
+```
+
+Note that in a plugin, we can register new keyboard bindings using the `register` method on the globalInstance.
+
+#### Listen for when a new binding is registered
+If you want to be notified every time a new key combination is registered with whenipress, you can use the `bindingRegistered`
+hook. It will receive the binding that was registered as the first parameter and the global `whenipress` instance as the second
+parameter. You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    bindingRegistered: (binding, globalInstance) => {
+        alert(`I'm now listening for any time you press ${binding.join(" + ")}.`)
+    }
+}
+```
+
+Note that it is not guaranteed the user has initialised your plugin prior to creating their bindings. If you need to ensure
+you have all bindings, you should iterate over registered bindings in your plugin's mounted method. 
+
+#### Listen for when a binding is stopped
+If you wish to be notified of when a binding has been removed from whenipress, you can use the `bindingStopped` hook.
+It will receive the binding that was stopped as the first parameter and the global `whenipress` instance as the second
+parameter. You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    bindingStopped: (binding, globalInstance) => {
+        alert(`You are no longer listening for ${binding.join(" + ")}.`)
+    }
+}
+```
+
+#### Listen for when all bindings are stopped
+To be informed when all bindings in the application are stopped, you should use the `allBindingsStopped` hook. 
+This receives the global `whenipress` instance as a parameter.
+You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    allBindingsStopped: globalInstance => {
+        alert(`Do not go gently into that good night...`)
+    }
+}
+```
+
+#### Hook in before an event is handler is fired
+It may be useful to perform an action just before a keyboard shortcut is handled. Say hello to the `beforeBindingHandled` hook.
+It will receive the binding that is to be handled as the first parameter and the global `whenipress` instance as the second
+parameter. You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    beforeBindingHandled: (binding, globalInstance) => {
+        alert(`You just pressed ${binding.join(" + ")}, but I got here first.`)
+    }
+}
+```
+
+You can actually prevent the handler from ever firing by returning `false` in you hook. This is useful if your plugin
+adds conditional functionality.
+
+```javascript
+const myPlugin = {
+    beforeBindingHandled: (binding, globalInstance) => {
+        if (userHasDisabledKeyboardShortcuts()) { 
+            return false; 
+        }
+    }
+}
+```
+
+#### Hook in after an event has been handled
+You may wish to know when a keyboard binding has been handled. You can use the `afterBindingHandled` hook for this.
+It will receive the binding that has been handled as the first parameter and the global `whenipress` instance as the second
+parameter. You should use this in your plugin instead of calling `whenipress` as the end user may have aliased `whenipress` under
+a different name.
+
+```javascript
+const myPlugin = {
+    afterBindingHandled: (binding, globalInstance) => {
+        alert(`You just pressed ${binding.join(" + ")}. It has been handled, but now I'm going to do something as well.`)
+    }
+}
+```
+
+#### Plugin options
+Whenipress provides a unified method of handling custom options to users of your plugin. To do so, register an `options`
+field in your plugin JSON.
+
+```javascript
+const myPlugin = {
+    options: {
+        urlsToSkip: [],
+        skipAllUrls: false                        
+    }
+}
+```
+
+Now, when your plugin is registered, these options can be overridden by the user.
+
+```javascript
+import whenipress from 'whenipress/whenipress'
+import myPlugin from 'awesomeplugin/myPlugin'
+
+whenipress().use(whenipress().pluginWithOptions(myPlugin, { skipAllUrls: true }))
+```
+
+#### Stopping plugins
+If you wish to stop all plugins running, you may use the `flushPlugins` method.
+
+```javascript
+whenipress().flushPlugins()
+```
