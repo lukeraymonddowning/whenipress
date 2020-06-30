@@ -8,6 +8,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 * [Usage](#using-whenipress)
     - [Simple key presses](#listening-for-key-presses)
     - [Key combos](#listening-for-key-combinations)
+    - [Alternatives to `then`](#alternatives-to-then)
     - [Stop listening for a single binding](#stop-listening-for-a-single-key-binding)
     - [Stop listening for all bindings](#stop-listening-for-all-key-bindings)
     - [Retrieve registered bindings](#retrieve-a-list-of-every-registered-key-binding)
@@ -51,7 +52,7 @@ whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 But you can equally use it via a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/whenipress@1.3.0/dist/whenipress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whenipress@1.4.0/dist/whenipress.js"></script>
 <script>
 whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 </script>
@@ -92,6 +93,21 @@ whenipress('ControlLeft', 'n').then(event => redirectToCreateForm())
 
 Pretty nice, right? We can pass any number of keys or key codes into the `whenipress` method to set up complex and
 powerful shortcuts. 
+
+### Alternatives to `then`
+Because `then` is used in JavaScript promises, some of you may with to use a different syntax to avoid any confusion.
+Whenipress aliases `then` to `do` and `run`, so you can use those instead if you prefer.
+
+```javascript
+// This...
+whenipress('a').then(e => alert('e pressed!'))
+
+// Is the same as this...
+whenipress('a').do(e => alert('e pressed!'))
+
+// And this...
+whenipress('a').run(e => alert('e pressed!'))
+```
 
 ### Stop listening for a single key binding
 Sometimes, you'll want to disable a key binding. No problem! When you create the key binding, you'll be returned a 
