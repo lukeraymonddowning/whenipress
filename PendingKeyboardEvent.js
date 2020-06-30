@@ -18,60 +18,8 @@ class PendingKeyboardEvent {
     }
 
     then(handler) {
-        this.createKeyDownListener(event => {
-            this._storeKeyBeingPressed(event)
-
-            if (!this.checkArraysHaveSameValuesRegardlessOfOrder(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
-                return
-            }
-
-            if (!this._shouldHandleOrSkipDoublePress()) {
-                return
-            }
-
-            if (this._manager.focusedElement) {
-                return
-            }
-
-            if (this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch).includes(false)) {
-                return this._resetPressCount()
-            }
-
-            handler({
-                keys: this.keysCurrentlyBeingPressed
-            })
-
-            this._resetPressCount()
-            this._totalKeyDownCountForKeysToWatch++
-
-            this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
-
-            if (!this._stopAfterNextRun) {
-                return
-            }
-
-            this.stop()
-        })
-
-        this.createKeyUpListener(event => {
-            this._removeReleasedKeyFromKeysBeingPressedArray(event)
-
-            if (this.keysCurrentlyBeingPressed.length !== 0) {
-                return
-            }
-
-            if (this._totalKeyDownCountForKeysToWatch <= this._totalKeyUpCountForKeysToWatch) {
-                return
-            }
-
-            this._totalKeyUpCountForKeysToWatch = this._totalKeyDownCountForKeysToWatch
-
-            if (!this._releasedHandler) {
-                return
-            }
-
-            this._releasedHandler(event)
-        })
+        this.createKeyDownHandler(handler)
+        this.createKeyUpHandler()
 
         return this
     }
@@ -138,35 +86,66 @@ class PendingKeyboardEvent {
     }
 
     stop() {
-        this.removeKeyDownListener()
-        this.removeKeyUpListener()
         this._manager._childStopped(this)
     }
 
-    createKeyDownListener(eventHandler) {
-        this._keyDownHandler = eventHandler
-        document.addEventListener('keydown', this._keyDownHandler)
-    }
+    createKeyDownHandler(handler) {
+        this._keyDownHandler = event => {
+            this._storeKeyBeingPressed(event)
 
-    removeKeyDownListener() {
-        if (!this._keyDownHandler) {
-            return
+            if (!this.checkArraysHaveSameValuesRegardlessOfOrder(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
+                return
+            }
+
+            if (!this._shouldHandleOrSkipDoublePress()) {
+                return
+            }
+
+            if (this._manager.focusedElement) {
+                return
+            }
+
+            if (this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch).includes(false)) {
+                return this._resetPressCount()
+            }
+
+            handler({
+                keys: this.keysCurrentlyBeingPressed
+            })
+
+            this._resetPressCount()
+            this._totalKeyDownCountForKeysToWatch++
+
+            this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
+
+            if (!this._stopAfterNextRun) {
+                return
+            }
+
+            this.stop()
         }
-
-        document.removeEventListener('keydown', this._keyDownHandler)
     }
 
-    createKeyUpListener(eventHandler) {
-        this._keyUpHandler = eventHandler
-        document.addEventListener('keyup', this._keyUpHandler)
-    }
+    createKeyUpHandler() {
+        this._keyUpHandler = event => {
+            this._removeReleasedKeyFromKeysBeingPressedArray(event)
 
-    removeKeyUpListener() {
-        if (!this._keyUpHandler) {
-            return
+            if (this.keysCurrentlyBeingPressed.length !== 0) {
+                return
+            }
+
+            if (this._totalKeyDownCountForKeysToWatch <= this._totalKeyUpCountForKeysToWatch) {
+                return
+            }
+
+            this._totalKeyUpCountForKeysToWatch = this._totalKeyDownCountForKeysToWatch
+
+            if (!this._releasedHandler) {
+                return
+            }
+
+            this._releasedHandler(event)
         }
-
-        document.removeEventListener('keyup', this._keyUpHandler)
     }
 
     checkArraysHaveSameValuesRegardlessOfOrder(array1, array2) {

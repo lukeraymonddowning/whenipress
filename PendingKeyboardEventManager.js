@@ -9,7 +9,22 @@ class PendingKeyboardEventManager {
         this.modifiers = []
         this.pluginsManager = new PluginsManager(this)
 
+        this.createKeyListeners();
         this.registerFocusListeners()
+    }
+
+    createKeyListeners() {
+        document.addEventListener('keydown', event => {
+            this.registeredEvents.forEach(registeredKeyboardEvent => {
+                registeredKeyboardEvent._keyDownHandler(event)
+            })
+        })
+
+        document.addEventListener('keyup', event => {
+            this.registeredEvents.forEach(registeredKeyboardEvent => {
+                registeredKeyboardEvent._keyUpHandler(event)
+            })
+        })
     }
 
     registerFocusListeners() {
