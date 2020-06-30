@@ -7,13 +7,16 @@
 <body>
 
 <input type="text">
-<input type="text">
-<input type="text">
-<input type="text">
+<input type="checkbox">
+<textarea name="" id="" cols="30" rows="10"></textarea>
+<select name="" id="">
+    <option value=""></option>
+</select>
+<button>Test</button>
 
 <script src="./../dist/whenipress.js"></script>
 <script>
-    whenipress('a').then(e => console.log('You pressed the letter a'))
+    whenipress('a').then(e => console.log('You pressed the letter a')).evenOnForms()
 
     whenipress('Shift', 'A').then(e => console.log('Capital A'))
 

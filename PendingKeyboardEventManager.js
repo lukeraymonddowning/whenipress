@@ -4,37 +4,27 @@ var PluginsManager = require('./PluginsManager')
 class PendingKeyboardEventManager {
 
     constructor() {
-        this.focusedElement = null
         this.registeredEvents = []
         this.modifiers = []
         this.pluginsManager = new PluginsManager(this)
 
         this.createKeyListeners();
-        this.registerFocusListeners()
     }
 
     createKeyListeners() {
         document.addEventListener('keydown', event => {
-            this.registeredEvents.forEach(registeredKeyboardEvent => {
-                registeredKeyboardEvent._keyDownHandler(event)
-            })
+            this._passEventToChildHandler(event, '_keyDownHandler')
         })
 
         document.addEventListener('keyup', event => {
-            this.registeredEvents.forEach(registeredKeyboardEvent => {
-                registeredKeyboardEvent._keyUpHandler(event)
-            })
+            this._passEventToChildHandler(event, '_keyUpHandler')
         })
     }
 
-    registerFocusListeners() {
-        document.addEventListener('focusin', () => {
-            this.focusedElement = document.activeElement
-        });
-
-        document.addEventListener('focusout', () => {
-            this.focusedElement = null
-        });
+    _passEventToChildHandler(event, handlerName) {
+        this.registeredEvents.forEach(registeredKeyboardEvent => {
+            registeredKeyboardEvent[handlerName](event)
+        })
     }
 
     register(...keys) {
