@@ -15,6 +15,17 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
     - [Create keybinding groups](#creating-keybinding-groups)
     - [Listen for double taps](#listening-for-double-taps)
     - [Listen for keys being released](#listening-for-when-keys-are-released)
+* [Extending whenipress](#extending-whenipress)
+    - [Registering plugins](#registering-plugins)
+    - [Plugin syntax](#plugin-syntax)
+        * [Initialising your plugin](#initialising-your-plugin)
+        * [Listen for new bindings](#listen-for-when-a-new-binding-is-registered)
+        * [Listen for a stopped binding](#listen-for-when-a-binding-is-stopped)
+        * [Listen for when all bindings are stopped](#listen-for-when-all-bindings-are-stopped)
+        * [Hook in before a handler is fired](#hook-in-before-an-event-is-handler-is-fired)
+        * [Hook in after a handler is fired](#hook-in-after-an-event-has-been-handled)
+        * [Plugin options](#plugin-options)
+        * [Stopping plugins](#stopping-plugins)
     
 
 ## Features
