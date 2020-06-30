@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lukeraymonddowning/whenipress/logo/logo.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/lukeraymonddowning/whenipress/logo/logo.png" width="300px"></p>
 
 # whenipress
 A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your application.
