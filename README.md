@@ -330,7 +330,11 @@ const myPlugin = {
 
 #### Plugin options
 Whenipress provides a unified method of handling custom options to users of your plugin. To do so, register an `options`
-field in your plugin JSON.
+field in your plugin JSON. You can include anything in here that you want, but be sure to let your users know in your
+plugin's documentation. 
+
+In our example below, we have decided to provide to options to the user, `urlsToSkip` and `skipAllUrls`. These are
+completely unique to your plugin and you're in charge of managing them.
 
 ```javascript
 const myPlugin = {
