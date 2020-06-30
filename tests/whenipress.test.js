@@ -37,6 +37,26 @@ test('it can be passed key codes instead of values', () => {
     expect(eventFiredCount).toBe(2)
 })
 
+test('it can use the do method as an alias for then', () => {
+    var eventFiredCount = 0
+
+    whenipress('a').do(e => eventFiredCount++)
+
+    press('a')
+
+    expect(eventFiredCount).toBe(1)
+})
+
+test('it can use the run method as an alias for then', () => {
+    var eventFiredCount = 0
+
+    whenipress('a').run(e => eventFiredCount++)
+
+    press('a')
+
+    expect(eventFiredCount).toBe(1)
+})
+
 test('can be given multiple parameters for key combinations', done => {
     whenipress('a', 'b', 'c').then(e => {
         expect(e.keys).toEqual(['b', 'a', 'c'])

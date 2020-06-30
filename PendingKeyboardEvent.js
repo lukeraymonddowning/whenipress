@@ -76,6 +76,14 @@ class PendingKeyboardEvent {
         return this
     }
 
+    do(handler) {
+        return this.then(handler)
+    }
+
+    run(handler) {
+        return this.then(handler)
+    }
+
     whenReleased(handler) {
         this._releasedHandler = handler
 
