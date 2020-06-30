@@ -138,35 +138,15 @@ class PendingKeyboardEvent {
     }
 
     stop() {
-        this.removeKeyDownListener()
-        this.removeKeyUpListener()
         this._manager._childStopped(this)
     }
 
     createKeyDownListener(eventHandler) {
         this._keyDownHandler = eventHandler
-        document.addEventListener('keydown', this._keyDownHandler)
-    }
-
-    removeKeyDownListener() {
-        if (!this._keyDownHandler) {
-            return
-        }
-
-        document.removeEventListener('keydown', this._keyDownHandler)
     }
 
     createKeyUpListener(eventHandler) {
         this._keyUpHandler = eventHandler
-        document.addEventListener('keyup', this._keyUpHandler)
-    }
-
-    removeKeyUpListener() {
-        if (!this._keyUpHandler) {
-            return
-        }
-
-        document.removeEventListener('keyup', this._keyUpHandler)
     }
 
     checkArraysHaveSameValuesRegardlessOfOrder(array1, array2) {
