@@ -11,6 +11,7 @@ class PendingKeyboardEvent {
         this._totalKeyDownCountForKeysToWatch = 0
         this._totalKeyUpCountForKeysToWatch = 0
         this._releasedHandler = null
+        this.handleEvenOnForms = false
 
         this._manager = manager
         this._pluginsManager = this._manager.pluginsManager
@@ -72,6 +73,12 @@ class PendingKeyboardEvent {
         })
     }
 
+    evenOnForms() {
+        this.handleEvenOnForms = true
+
+        return this
+    }
+
     once() {
         this._stopAfterNextRun = true
 
@@ -101,7 +108,7 @@ class PendingKeyboardEvent {
                 return
             }
 
-            if (this._manager.focusedElement) {
+            if (this._isNotInScope(event.target)) {
                 return
             }
 
@@ -124,6 +131,14 @@ class PendingKeyboardEvent {
 
             this.stop()
         }
+    }
+
+    _isNotInScope(element) {
+        return this._isUserInput(element) && !this.handleEvenOnForms;
+    }
+
+    _isUserInput(element) {
+        return ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName);
     }
 
     createKeyUpHandler() {

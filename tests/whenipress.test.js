@@ -294,6 +294,15 @@ test('it will only fire the when released if the active shortcut was released', 
     expect(releasedEventFired).toBeTruthy()
 })
 
+test('the evenOnForms modifier can be called to make the keyboard shortcut fire even if the user has an input focused', () => {
+    const noForms = whenipress('c', 'b', 'a').then(e => {})
+
+    const evenForms = whenipress('a', 'b', 'c').then(e => {}).evenOnForms()
+
+    expect(noForms.handleEvenOnForms).toEqual(false)
+    expect(evenForms.handleEvenOnForms).toEqual(true)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))

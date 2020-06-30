@@ -16,6 +16,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
     - [Create keybinding groups](#creating-keybinding-groups)
     - [Listen for double taps](#listening-for-double-taps)
     - [Listen for keys being released](#listening-for-when-keys-are-released)
+    - [Keybindings and form elements](#keybindings-and-form-elements)
 * [Extending whenipress](#extending-whenipress)
     - [Registering plugins](#registering-plugins)
     - [Plugin syntax](#plugin-syntax)
@@ -187,6 +188,15 @@ whenipress('a', 'b', 'c')
         .whenReleased(e => {
             console.log('Keys are released!');
         });
+```
+
+### Keybindings and form elements
+By default, whenipress will ignore keybindings on form elements like inputs, textareas, and select boxes so that you
+don't have unexpected side effects in your application. To overrride this functionality and cause a keybinding to 
+fire even on these form elements, you may tag `evenOnForms` on to the end of your binding registration.
+
+```javascript
+whenipress('LeftShift', 'KeyA').then(e => alert("I work, even in inputs, textareas and selects!")).evenOnForms()
 ```
 
 ## Extending whenipress
