@@ -95,7 +95,7 @@ Pretty nice, right? We can pass any number of keys or key codes into the `whenip
 powerful shortcuts. 
 
 ### Alternatives to `then`
-Because `then` is used in JavaScript promises, some of you may with to use a different syntax to avoid any confusion.
+Because `then` is used in JavaScript promises, some of you may prefer to use a different syntax to avoid any confusion.
 Whenipress aliases `then` to `do` and `run`, so you can use those instead if you prefer.
 
 ```javascript
