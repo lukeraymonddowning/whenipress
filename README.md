@@ -33,6 +33,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
 - A simple, intuitive syntax for adding keyboard shortcuts for key presses and key combinations.
 - Takes the complexity out of key codes and values, allowing you to mix and match to your heart's content.
 - Teeny and tiny and dependency free - just 1.4kB minified & gzipped.
+- Stores all of your keyboard combinations under a single keydown and keyup listener, improving your app's performance.
 - Provides advanced functionality, such as listening for double tapping keys and only listening for a keyboard event once.
 - Stores all your key bindings in one place, allowing you to have access to every binding in your application.
 - Allows for key groups using the `group` function, making your code more readable and powerful.
@@ -52,7 +53,7 @@ whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 But you can equally use it via a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/whenipress@1.4.0/dist/whenipress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whenipress@1.5.0/dist/whenipress.js"></script>
 <script>
 whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 </script>
