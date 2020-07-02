@@ -32,6 +32,7 @@
     whenipress('Backspace')
         .whileFocusIsWithin(document.querySelector('#input-wrapper'))
         .then(e => document.querySelector('#input-wrapper input').value = "")
+        .evenOnForms()
 
     whenipress('Shift', 'Control', 'A').then(e => console.log('Shift a'))
 
