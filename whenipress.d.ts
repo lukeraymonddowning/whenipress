@@ -18,6 +18,8 @@ declare module 'whenipress' {
       whenReleased(handler: Handler): this;
       once(): this;
       twiceRapidly(timeout?: number): this;
+      evenOnForms(): this;
+      whileFocusIsWithin(element: string | Element): this;
       stop(): void;
       createKeyDownHandler(handler: Handler): void;
       createKeyUpHandler(handler: Handler): void;

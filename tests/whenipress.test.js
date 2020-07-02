@@ -303,6 +303,26 @@ test('the evenOnForms modifier can be called to make the keyboard shortcut fire 
     expect(evenForms.handleEvenOnForms).toEqual(true)
 })
 
+test('a binding can be scoped to a given node', () => {
+    document.body.innerHTML = `<div><input type="text" id="foobar"></div>`
+
+    const foobar = document.querySelector('#foobar')
+
+    const binding = whenipress('a').whileFocusIsWithin(foobar).then(e => {})
+
+    expect(binding.scope).toEqual(foobar)
+})
+
+test('a binding can be scoped to a given query selector', () => {
+    document.body.innerHTML = `<div><input type="text" id="foobar"></div>`
+
+    const foobar = document.querySelector('#foobar')
+
+    const binding = whenipress('a').whileFocusIsWithin('#foobar').then(e => {})
+
+    expect(binding.scope).toEqual(foobar)
+})
+
 function press(...keys) {
     keys.forEach(key => dispatchKeyDown(key))
     keys.forEach(key => dispatchKeyUp(key))

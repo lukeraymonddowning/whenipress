@@ -19,6 +19,7 @@ A gorgeous, simple, tiny JavaScript package to add keyboard bindings into your a
     - [Listen for double taps](#listening-for-double-taps)
     - [Listen for keys being released](#listening-for-when-keys-are-released)
     - [Keybindings and form elements](#keybindings-and-form-elements)
+    - [Scoping your bindings to elements](#scoping-your-bindings-to-elements)
 * [Extending whenipress](#extending-whenipress)
     - [Registering plugins](#registering-plugins)
     - [Plugin syntax](#plugin-syntax)
@@ -56,7 +57,7 @@ whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 But you can equally use it via a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/whenipress@1.6.0/dist/whenipress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whenipress@1.7.0/dist/whenipress.js"></script>
 <script>
 whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 </script>
@@ -194,12 +195,28 @@ whenipress('a', 'b', 'c')
 
 ### Keybindings and form elements
 By default, whenipress will ignore keybindings on form elements like inputs, textareas, and select boxes so that you
-don't have unexpected side effects in your application. To overrride this functionality and cause a keybinding to 
+don't have unexpected side effects in your application. To override this functionality and cause a keybinding to 
 fire even on these form elements, you may tag `evenOnForms` on to the end of your binding registration.
 
 ```javascript
 whenipress('LeftShift', 'KeyA').then(e => alert("I work, even in inputs, textareas and selects!")).evenOnForms()
 ```
+
+### Scoping your bindings to a node
+Sometimes, you may only want a keyboard event to fire if a node or children within that node are currently in focus.
+For example, you may have a sidebar menu where, only when opened, you would like the escape key to close the menu for you.
+
+Whenipress allows you to do this using the `whileFocusIsWithin` method. This method accepts a query selector or an Element.
+
+```javascript
+whenipress('Escape').whileFocusIsWithin('#slideout-menu').then(e => closeMenu())
+
+// Or...
+whenipress('Escape').whileFocusIsWithin(document.querySelector('#slideout-menu')).then(e => closeMenu())
+```
+
+Whenipress will make sure that the `#slideout-menu` or one of its descendents has focus before executing your callback.  
+
 
 ## Extending whenipress
 Whenipress was created to be extended. Whilst it offers tons of functionality out of the box, it can do so much more with a plugin.

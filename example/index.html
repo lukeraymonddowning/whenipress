@@ -6,19 +6,33 @@
 </head>
 <body>
 
-<input type="text">
+<div id="input-wrapper">
+    <div>
+        <div>
+            <input type="text">
+            <input type="text">
+        </div>
+    </div>
+</div>
 <input type="checkbox">
-<textarea name="" id="" cols="30" rows="10"></textarea>
-<select name="" id="">
-    <option value=""></option>
+<textarea id="textarea" cols="30" rows="10"></textarea>
+<select>
+    <option value="1">Foo</option>
 </select>
 <button>Test</button>
 
 <script src="./../dist/whenipress.js"></script>
 <script>
-    whenipress('a').then(e => console.log('You pressed the letter a')).evenOnForms()
+    whenipress('Backspace')
+        .then(e => alert('whoa mule')).evenOnForms()
 
-    whenipress('Shift', 'A').then(e => console.log('Capital A'))
+    whenipress('Backspace')
+        .then(e => console.log('hi'))
+
+    whenipress('Backspace')
+        .whileFocusIsWithin(document.querySelector('#input-wrapper'))
+        .then(e => document.querySelector('#input-wrapper input').value = "")
+        .evenOnForms()
 
     whenipress('Shift', 'Control', 'A').then(e => console.log('Shift a'))
 
@@ -27,6 +41,8 @@
     whenipress('ControlLeft', 'n').then(e => console.log('New resource'))
 
     whenipress('Shift', 'Digit2').then(e => console.log('Shift 2 pressed')).whenReleased(e => console.log('Shift 2 released'))
+
+    whenipress('b').then(e => console.log('b was pressed'))
 </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 class PendingKeyboardEvent {
 
     constructor(manager, ...keys) {
+        this.scope = null
         this.keysCurrentlyBeingPressed = []
         this._keyDownHandler = null
         this._keyUpHandler = null
@@ -16,6 +17,16 @@ class PendingKeyboardEvent {
         this._manager = manager
         this._pluginsManager = this._manager.pluginsManager
         this.keysToWatch = keys
+    }
+
+    whileFocusIsWithin(element) {
+        if (typeof element === 'string') {
+            element = document.querySelector(element)
+        }
+
+        this.scope = element
+
+        return this
     }
 
     then(handler) {
@@ -100,15 +111,15 @@ class PendingKeyboardEvent {
         this._keyDownHandler = event => {
             this._storeKeyBeingPressed(event)
 
-            if (!this.checkArraysHaveSameValuesRegardlessOfOrder(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
+            if (!this._isInScope(event.target)) {
+                return
+            }
+
+            if (!this._arraysAreEqual(this.keysCurrentlyBeingPressed, this.keysToWatch)) {
                 return
             }
 
             if (!this._shouldHandleOrSkipDoublePress()) {
-                return
-            }
-
-            if (this._isNotInScope(event.target)) {
                 return
             }
 
@@ -125,16 +136,20 @@ class PendingKeyboardEvent {
 
             this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
 
-            if (!this._stopAfterNextRun) {
-                return
-            }
-
-            this.stop()
+            this._stopAfterNextRun && this.stop()
         }
     }
 
-    _isNotInScope(element) {
-        return this._isUserInput(element) && !this.handleEvenOnForms;
+    _isInScope(element) {
+        if (!this.handleEvenOnForms) {
+            return false
+        }
+
+        if (this.scope) {
+            return this.scope.isSameNode(element) || this.scope.contains(element)
+        }
+
+        return !this._isUserInput(element)
     }
 
     _isUserInput(element) {
@@ -163,28 +178,8 @@ class PendingKeyboardEvent {
         }
     }
 
-    checkArraysHaveSameValuesRegardlessOfOrder(array1, array2) {
-        if (!this._arraysAreEqual(array1, array2)) {
-            return false
-        }
-
-        return array1.length === array2.length;
-    }
-
     _arraysAreEqual(array1, array2) {
-        if (array1.length !== array2.length) {
-            return false
-        }
-
-        if (!array2.every(item => array1.includes(item))) {
-            return false
-        }
-
-        if (!array1.every(item => array2.includes(item))) {
-            return false
-        }
-
-        return true;
+        return array1.length === array2.length && array2.every(item => array1.includes(item))
     }
 
 }
