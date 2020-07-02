@@ -202,7 +202,7 @@ fire even on these form elements, you may tag `evenOnForms` on to the end of you
 whenipress('LeftShift', 'KeyA').then(e => alert("I work, even in inputs, textareas and selects!")).evenOnForms()
 ```
 
-### Scoping your bindings to a node
+### Scoping your bindings to elements
 Sometimes, you may only want a keyboard event to fire if a node or children within that node are currently in focus.
 For example, you may have a sidebar menu where, only when opened, you would like the escape key to close the menu for you.
 
