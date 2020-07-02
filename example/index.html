@@ -23,7 +23,15 @@
 
 <script src="./../dist/whenipress.js"></script>
 <script>
-    whenipress('Backspace').whileFocusIsWithin(document.querySelector('#input-wrapper')).then(e => document.querySelector('#input-wrapper input').value = "").evenOnForms()
+    whenipress('Backspace')
+        .then(e => alert('whoa mule')).evenOnForms()
+
+    whenipress('Backspace')
+        .then(e => console.log('hi'))
+
+    whenipress('Backspace')
+        .whileFocusIsWithin(document.querySelector('#input-wrapper'))
+        .then(e => document.querySelector('#input-wrapper input').value = "")
 
     whenipress('Shift', 'Control', 'A').then(e => console.log('Shift a'))
 

@@ -141,11 +141,11 @@ class PendingKeyboardEvent {
     }
 
     _isInScope(element) {
-        if (!this.scope) {
-            return !this._isUserInput(element) || this.handleEvenOnForms
+        if (this.scope) {
+            return this.scope.isSameNode(element) || this.scope.contains(element)
         }
 
-        return this.scope.isSameNode(element) || this.scope.contains(element)
+        return !this._isUserInput(element) || this.handleEvenOnForms
     }
 
     _isUserInput(element) {
