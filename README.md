@@ -57,7 +57,7 @@ whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 But you can equally use it via a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/whenipress@1.7.0/dist/whenipress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whenipress@1.7.1/dist/whenipress.js"></script>
 <script>
 whenipress('a', 'b', 'c').then(e => console.log('Nice key combo!'));
 </script>
