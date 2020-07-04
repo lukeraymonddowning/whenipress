@@ -123,7 +123,7 @@ class PendingKeyboardEvent {
                 return
             }
 
-            if (this._pluginsManager.handle('beforeBindingHandled', this.keysToWatch).includes(false)) {
+            if (this._pluginsManager.handle('beforeBindingHandled', this).includes(false)) {
                 return this._resetPressCount()
             }
 
@@ -134,7 +134,7 @@ class PendingKeyboardEvent {
             this._resetPressCount()
             this._totalKeyDownCountForKeysToWatch++
 
-            this._pluginsManager.handle('afterBindingHandled', this.keysToWatch)
+            this._pluginsManager.handle('afterBindingHandled', this)
 
             this._stopAfterNextRun && this.stop()
         }

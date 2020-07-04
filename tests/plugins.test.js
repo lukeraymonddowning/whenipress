@@ -1,4 +1,5 @@
 const whenipress = require('./../whenipress')
+const PendingKeyboardEvent = require('./../PendingKeyboardEvent')
 
 afterEach(() => {
     whenipress().stopAll()
@@ -8,7 +9,8 @@ afterEach(() => {
 test('it can be notified of when a new binding is registered', done => {
     const examplePlugin = {
         bindingRegistered: (binding, globalInstance) => {
-            expect(binding).toEqual(['a'])
+            expect(binding).toBeInstanceOf(PendingKeyboardEvent)
+            expect(binding.keysToWatch).toEqual(['a'])
             expect(globalInstance.bindings().length).toBe(1)
             done()
         }
@@ -37,7 +39,8 @@ test('it can be notified of when all bindings are stopped', done => {
 test('it may be notified of when a single binding is stopped', done => {
     const plugin = {
         bindingStopped: (keys, globalInstance) => {
-            expect(keys).toEqual(['a'])
+            expect(keys).toBeInstanceOf(PendingKeyboardEvent)
+            expect(keys.keysToWatch).toEqual(['a'])
             expect(globalInstance.bindings().length).toBe(0)
             done()
         }
@@ -56,6 +59,8 @@ test('it may hook in directly before an event handler', () => {
 
     const plugin = {
         beforeBindingHandled: (keys, globalInstance) => {
+            expect(keys).toBeInstanceOf(PendingKeyboardEvent)
+            expect(keys.keysToWatch).toEqual(['a'])
             expect(eventFiredCount).toBe(0)
             beforeHandled = true
         }
@@ -96,7 +101,8 @@ test('it may hook into the post event handler', () => {
 
     const plugin = {
         afterBindingHandled: (keys, globalInstance) => {
-            expect(keys).toEqual(['a'])
+            expect(keys).toBeInstanceOf(PendingKeyboardEvent)
+            expect(keys.keysToWatch).toEqual(['a'])
             expect(eventFiredCount).toBe(1)
             postHandled = true
         }
