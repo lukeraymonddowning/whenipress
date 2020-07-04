@@ -31,7 +31,7 @@ class PendingKeyboardEventManager {
         let keysWithModifiers = [...this.modifiers, ...keys]
         var event = new PendingKeyboardEvent(this, ...keysWithModifiers)
         this.registeredEvents.push(event)
-        this.pluginsManager.handle('bindingRegistered', keysWithModifiers)
+        this.pluginsManager.handle('bindingRegistered', event)
         return event
     }
 
@@ -66,7 +66,7 @@ class PendingKeyboardEventManager {
 
     _childStopped(child) {
         this.registeredEvents = [...this.registeredEvents].filter(event => event !== child)
-        this.pluginsManager.handle('bindingStopped', child.keysToWatch)
+        this.pluginsManager.handle('bindingStopped', child)
     }
 
 }
