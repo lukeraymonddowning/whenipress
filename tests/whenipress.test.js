@@ -294,6 +294,16 @@ test('it will only fire the when released if the active shortcut was released', 
     expect(releasedEventFired).toBeTruthy()
 })
 
+test('it includes the native event in the event object', () => {
+    var nativeEvent;
+
+    whenipress('a').then(e => nativeEvent = e.nativeEvent);
+
+    press('a')
+
+    expect(nativeEvent).toBeInstanceOf(KeyboardEvent)
+});
+
 test('the evenOnForms modifier can be called to make the keyboard shortcut fire even if the user has an input focused', () => {
     const noForms = whenipress('c', 'b', 'a').then(e => {})
 
