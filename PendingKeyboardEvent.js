@@ -128,7 +128,8 @@ class PendingKeyboardEvent {
             }
 
             handler({
-                keys: this.keysCurrentlyBeingPressed
+                keys: this.keysCurrentlyBeingPressed,
+                nativeEvent: event,
             })
 
             this._resetPressCount()
